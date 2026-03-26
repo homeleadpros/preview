@@ -522,10 +522,15 @@ var SD = {
   }
 };
 
-// Match service key
+// Match service key — handle multi-select by using first value only
+// GHL multi-select sends "Remodeling 🏡, Landscaping 🌳" — grab first item
+var firstService = service.split(',')[0].trim().toLowerCase();
 var key = 'other';
-Object.keys(SD).forEach(function(k){ if(service.indexOf(k)!==-1) key=k; });
-if(service.indexOf('concrete')!==-1||service.indexOf('concreto')!==-1) key='concreto';
+var matchOrder = ['concreto','concrete','remodeling','landscaping','painting','carpentry','cleaning'];
+for(var i=0;i<matchOrder.length;i++){
+  if(firstService.indexOf(matchOrder[i])!==-1){ key=matchOrder[i]; break; }
+}
+if(key==='concrete') key='concreto';
 var d = SD[key];
 
 // ── POPULATE ──
